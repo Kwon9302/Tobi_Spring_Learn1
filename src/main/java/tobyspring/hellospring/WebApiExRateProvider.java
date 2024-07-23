@@ -11,9 +11,9 @@ import java.net.URL;
 import java.util.stream.Collectors;
 
 // 환율 정보 가져오기
-public class WebApiExRatePaymentService extends PaymentService {
+public class WebApiExRateProvider implements ExRateProvider {
     @Override
-    BigDecimal getExRate(String currency) throws IOException {
+    public BigDecimal getExRate(String currency) throws IOException {
         // https://open.er-api.com/v6/latest/USD
         URL url = new URL("https://open.er-api.com/v6/latest/" + currency);
 
@@ -28,8 +28,7 @@ public class WebApiExRatePaymentService extends PaymentService {
         // ⭐ JSON객체 다루는 클래스 ObjectMapper ⭐️
         ObjectMapper mapper = new ObjectMapper();
         ExRateDate data = mapper.readValue(response, ExRateDate.class);
-        BigDecimal exRate = data.rates().get("KRW");
-        return exRate;
+        return data.rates().get("KRW");
 
 
     }
