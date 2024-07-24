@@ -1,6 +1,7 @@
 package tobyspring.hellospring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.stream.Collectors;
 
+
+@Component // Spring에게 읽어야 한다고 표시해줌
 // 환율 정보 가져오기
 public class WebApiExRateProvider implements ExRateProvider {
     @Override
@@ -28,6 +31,8 @@ public class WebApiExRateProvider implements ExRateProvider {
         // ⭐ JSON객체 다루는 클래스 ObjectMapper ⭐️
         ObjectMapper mapper = new ObjectMapper();
         ExRateDate data = mapper.readValue(response, ExRateDate.class);
+
+//        System.out.println("API ExRate : " + data.rates().get("KRW"));
         return data.rates().get("KRW");
 
 
