@@ -2,26 +2,25 @@ package tobyspring.hellospring.payment;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tobyspring.hellospring.ExRateProviderStub;
-import tobyspring.hellospring.ObjectFactory;
-import tobyspring.hellospring.TestObjectFactory;
+import tobyspring.hellospring.TestPaymentConfig;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Clock;
 
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class) // Test시 SpringExtension을 이용하도록 요청한다 (Test시 고정값이므로 외워도 좋다.)
-@ContextConfiguration(classes = TestObjectFactory.class)  // @ExtendWith, @ContextConfiguration은 고정으로 나온다.
+@ContextConfiguration(classes = TestPaymentConfig.class)  // @ExtendWith, @ContextConfiguration은 고정으로 나온다.
 class PaymentServiceSpringTest {
 
     @Autowired PaymentService paymentService;
+    @Autowired ExRateProviderStub exRateProviderStub;
+    @Autowired Clock clock;
 
 
     @Test
@@ -32,9 +31,6 @@ class PaymentServiceSpringTest {
         assertThat(payment.getExRate()).isEqualByComparingTo(valueOf(1000));
         assertThat(payment.getConvertedAmount()).isEqualByComparingTo(valueOf(10000));
 
-        // 유효 시간 검증
-//        assertThat(payment.getValidUntil()).isAfter(LocalDateTime.now());
-//        assertThat(payment.getValidUntil()).isBefore(LocalDateTime.now().plusMinutes(30));
     }
 
     }
