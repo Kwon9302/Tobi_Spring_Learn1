@@ -25,7 +25,6 @@ public class PaymentTest {
 
         Assertions.assertThat(payment.isValid(clock)).isTrue();
 
-
         Assertions.assertThat(payment.isValid(Clock.offset(clock, Duration.of(30, ChronoUnit.MINUTES)))).isFalse();
     }
 }
