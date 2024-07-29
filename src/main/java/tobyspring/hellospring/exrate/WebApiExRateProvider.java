@@ -14,13 +14,17 @@ import java.net.http.HttpResponse;
 @Component // Spring에게 읽어야 한다고 표시해줌
 // 환율 정보 가져오기
 public class WebApiExRateProvider implements ExRateProvider {
-    ApiTemplate apiTemplate = new ApiTemplate();
+    private final ApiTemplate apiTemplate;
+
+    public WebApiExRateProvider(ApiTemplate apiTemplate) {
+        this.apiTemplate = apiTemplate;
+    }
 
     @Override
     public BigDecimal getExRate(String currency){
         // https://open.er-api.com/v6/latest/USD
         String url = "https://open.er-api.com/v6/latest/" + currency;
 
-        return apiTemplate.getExRate(url, new HttpClientApiExercutor(), new ErApiExRateExtractor());
+        return apiTemplate.getForExRate(url);
     }
 }
